@@ -81,8 +81,8 @@
                 <h1>Create Account</h1>
                 <p class="auth-subtitle">Join our community in seconds</p>
                 
-            <!--post method to allow php to validate-->
-                <form class="auth-form" id="registerForm" method="POST" action="">
+            
+                <form class="auth-form" id="registerForm" >
                     <div class="form-row">
                         <div class="form-group">
                             <label for="firstName">First Name</label>
