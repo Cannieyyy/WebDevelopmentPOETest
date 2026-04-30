@@ -1,5 +1,11 @@
+<?php
+require_once 'includes/auth.php';
+$currentUser = getCurrentUser();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <!-- Meta tags for responsive design -->
     <meta charset="UTF-8">
@@ -10,6 +16,7 @@
     <!-- Google Fonts for modern typography -->
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <!-- Navigation - consistent across all pages -->
     <nav class="navbar" id="navbar">
@@ -19,7 +26,7 @@
                 <span class="logo-icon">◆</span>
                 <span class="logo-text">PasTimes</span>
             </a>
-            
+
             <!-- Mobile menu toggle button - only visible on small screens -->
             <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
                 <span></span>
@@ -39,90 +46,90 @@
             <div class="nav-actions">
                 <a href="cart.php" class="icon-btn cart-btn" aria-label="Shopping cart">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M9 2L6 7H3L5.5 20H18.5L21 7H18L15 2H9Z"/>
-                        <path d="M9 11V17M15 11V17"/>
+                        <path d="M9 2L6 7H3L5.5 20H18.5L21 7H18L15 2H9Z" />
+                        <path d="M9 11V17M15 11V17" />
                     </svg>
                     <span class="cart-count" id="cartCount">0</span>
                 </a>
-                <a href="login.php" class="btn btn-outline">Login</a>
+                <a href="login.php" class="btn btn-outline" id="loginBtn">Login</a>
                 <a href="register.php" class="btn btn-primary">Get Started</a>
             </div>
         </div>
     </nav>
 
-   <!-- Hero Section - Clean with Slideshow -->
-<header class="hero">
-    <div class="hero-content">
-        <div class="hero-text">
-            <h1 class="hero-title">
-                Fashion that<br>
-                <span class="gradient-text">doesn't cost</span><br>
-                the Earth
-            </h1>
-            <p class="hero-subtitle">
-                Buy and sell pre-loved fashion. Join the sustainable revolution 
-                where style meets consciousness.
-            </p>
-            <div class="hero-cta">
-                <a href="browse.php" class="btn btn-large btn-primary">
-                    Start Exploring
-                    <span class="btn-arrow">→</span>
-                </a>
-                <a href="seller-dashboard.php" class="btn btn-large btn-glass">
-                    Start Selling
-                </a>
+    <!-- Hero Section - Clean with Slideshow -->
+    <header class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    Fashion that<br>
+                    <span class="gradient-text">doesn't cost</span><br>
+                    the Earth
+                </h1>
+                <p class="hero-subtitle">
+                    Buy and sell pre-loved fashion. Join the sustainable revolution
+                    where style meets consciousness.
+                </p>
+                <div class="hero-cta">
+                    <a href="browse.php" class="btn btn-large btn-primary">
+                        Start Exploring
+                        <span class="btn-arrow">→</span>
+                    </a>
+                    <a href="seller-dashboard.php" class="btn btn-large btn-glass">
+                        Start Selling
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">50K+</span>
+                        <span class="stat-label">Items Sold</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">12K+</span>
+                        <span class="stat-label">Active Sellers</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">4.9</span>
+                        <span class="stat-label">User Rating</span>
+                    </div>
+                </div>
             </div>
-            <div class="hero-stats">
-                <div class="stat">
-                    <span class="stat-number">50K+</span>
-                    <span class="stat-label">Items Sold</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-number">12K+</span>
-                    <span class="stat-label">Active Sellers</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-number">4.9</span>
-                    <span class="stat-label">User Rating</span>
+
+            <!-- Clean Slideshow on Right -->
+            <div class="hero-visual">
+                <div class="gradient-orb"></div>
+
+                <div class="slideshow-container">
+                    <div class="slideshow-slide active">
+                        <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800" alt="Woman shopping sustainable fashion">
+                        <div class="slide-caption">
+                            <span>Shop Sustainable</span>
+                        </div>
+                    </div>
+                    <div class="slideshow-slide">
+                        <img src="https://images.unsplash.com/photo-1634133118553-1e6e18299886?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Vintage clothing collection">
+                        <div class="slide-caption">
+                            <span>Unique Vintage Finds</span>
+                        </div>
+                    </div>
+                    <div class="slideshow-slide">
+                        <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=800" alt="Sell your clothes">
+                        <div class="slide-caption">
+                            <span>Sell Your Style</span>
+                        </div>
+                    </div>
+
+                    <!-- Slideshow Controls -->
+                    <div class="slideshow-dots">
+                        <button class="dot active" aria-label="Slide 1"></button>
+                        <button class="dot" aria-label="Slide 2"></button>
+                        <button class="dot" aria-label="Slide 3"></button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Clean Slideshow on Right -->
-        <div class="hero-visual">
-            <div class="gradient-orb"></div>
-            
-            <div class="slideshow-container">
-                <div class="slideshow-slide active">
-                    <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800" alt="Woman shopping sustainable fashion">
-                    <div class="slide-caption">
-                        <span>Shop Sustainable</span>
-                    </div>
-                </div>
-                <div class="slideshow-slide">
-                    <img src="https://images.unsplash.com/photo-1634133118553-1e6e18299886?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Vintage clothing collection">
-                    <div class="slide-caption">
-                        <span>Unique Vintage Finds</span>
-                    </div>
-                </div>
-                <div class="slideshow-slide">
-                    <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=800" alt="Sell your clothes">
-                    <div class="slide-caption">
-                        <span>Sell Your Style</span>
-                    </div>
-                </div>
-                
-                <!-- Slideshow Controls -->
-                <div class="slideshow-dots">
-                    <button class="dot active" aria-label="Slide 1"></button>
-                    <button class="dot" aria-label="Slide 2"></button>
-                    <button class="dot" aria-label="Slide 3"></button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-</header>
+    </header>
 
     <!-- Categories Section -->
     <section class="categories">
@@ -182,17 +189,17 @@
                     <div class="step-icon">
                         <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <!-- Camera body -->
-                            <rect x="4" y="12" width="40" height="28" rx="4" stroke="currentColor" stroke-width="2.5" fill="none"/>
+                            <rect x="4" y="12" width="40" height="28" rx="4" stroke="currentColor" stroke-width="2.5" fill="none" />
                             <!-- Lens outer ring -->
-                            <circle cx="24" cy="26" r="10" stroke="currentColor" stroke-width="2.5" fill="none"/>
+                            <circle cx="24" cy="26" r="10" stroke="currentColor" stroke-width="2.5" fill="none" />
                             <!-- Lens inner ring -->
-                            <circle cx="24" cy="26" r="6" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <circle cx="24" cy="26" r="6" stroke="currentColor" stroke-width="2" fill="none" />
                             <!-- Lens aperture -->
-                            <circle cx="24" cy="26" r="2.5" fill="currentColor"/>
+                            <circle cx="24" cy="26" r="2.5" fill="currentColor" />
                             <!-- Flash/viewfinder bump -->
-                            <path d="M16 12V8C16 6.89543 16.8954 6 18 6H30C31.1046 6 32 6.89543 32 8V12" stroke="currentColor" stroke-width="2.5" fill="none"/>
+                            <path d="M16 12V8C16 6.89543 16.8954 6 18 6H30C31.1046 6 32 6.89543 32 8V12" stroke="currentColor" stroke-width="2.5" fill="none" />
                             <!-- Shutter button -->
-                            <circle cx="40" cy="18" r="2" fill="currentColor"/>
+                            <circle cx="40" cy="18" r="2" fill="currentColor" />
                         </svg>
                     </div>
                     <h3>Snap & List</h3>
@@ -206,9 +213,9 @@
                     <div class="step-icon">
                         <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <!-- Shield outline -->
-                            <path d="M24 4L6 12V22C6 33.05 13.9 42.22 24 44C34.1 42.22 42 33.05 42 22V12L24 4Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" fill="none"/>
+                            <path d="M24 4L6 12V22C6 33.05 13.9 42.22 24 44C34.1 42.22 42 33.05 42 22V12L24 4Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" fill="none" />
                             <!-- Checkmark inside shield -->
-                            <path d="M16 24L22 30L32 18" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                            <path d="M16 24L22 30L32 18" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" />
                         </svg>
                     </div>
                     <h3>Get Verified</h3>
@@ -222,13 +229,13 @@
                     <div class="step-icon">
                         <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <!-- Main chat bubble -->
-                            <path d="M40 20C40 28.8366 32.8366 36 24 36C21.4227 36 19.0063 35.4229 16.8856 34.3996L8 38L10.5 29.5C8.88163 26.7742 8 23.4927 8 20C8 11.1634 15.1634 4 24 4C32.8366 4 40 11.1634 40 20Z" stroke="currentColor" stroke-width="2.5" fill="none"/>
+                            <path d="M40 20C40 28.8366 32.8366 36 24 36C21.4227 36 19.0063 35.4229 16.8856 34.3996L8 38L10.5 29.5C8.88163 26.7742 8 23.4927 8 20C8 11.1634 15.1634 4 24 4C32.8366 4 40 11.1634 40 20Z" stroke="currentColor" stroke-width="2.5" fill="none" />
                             <!-- Secondary chat bubble overlapping -->
-                            <path d="M44 32C44 38.6274 38.6274 44 32 44C30.1774 44 28.4607 43.5778 26.9366 42.8326L20 46L22.125 39.25C20.883 37.1814 20 34.6861 20 32C20 25.3726 25.3726 20 32 20C38.6274 20 44 25.3726 44 32Z" stroke="currentColor" stroke-width="2.5" fill="rgba(0,245,212,0.1)"/>
+                            <path d="M44 32C44 38.6274 38.6274 44 32 44C30.1774 44 28.4607 43.5778 26.9366 42.8326L20 46L22.125 39.25C20.883 37.1814 20 34.6861 20 32C20 25.3726 25.3726 20 32 20C38.6274 20 44 25.3726 44 32Z" stroke="currentColor" stroke-width="2.5" fill="rgba(0,245,212,0.1)" />
                             <!-- Dots in secondary bubble -->
-                            <circle cx="29" cy="32" r="1.5" fill="currentColor"/>
-                            <circle cx="32" cy="32" r="1.5" fill="currentColor"/>
-                            <circle cx="35" cy="32" r="1.5" fill="currentColor"/>
+                            <circle cx="29" cy="32" r="1.5" fill="currentColor" />
+                            <circle cx="32" cy="32" r="1.5" fill="currentColor" />
+                            <circle cx="35" cy="32" r="1.5" fill="currentColor" />
                         </svg>
                     </div>
                     <h3>Connect</h3>
@@ -242,17 +249,17 @@
                     <div class="step-icon">
                         <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <!-- Package box -->
-                            <rect x="4" y="12" width="40" height="32" rx="3" stroke="currentColor" stroke-width="2.5" fill="none"/>
+                            <rect x="4" y="12" width="40" height="32" rx="3" stroke="currentColor" stroke-width="2.5" fill="none" />
                             <!-- Top flaps -->
-                            <path d="M4 20H44" stroke="currentColor" stroke-width="2"/>
-                            <path d="M24 12V20" stroke="currentColor" stroke-width="2"/>
+                            <path d="M4 20H44" stroke="currentColor" stroke-width="2" />
+                            <path d="M24 12V20" stroke="currentColor" stroke-width="2" />
                             <!-- Tape/seal -->
-                            <path d="M18 12L24 20L30 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M18 12L24 20L30 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             <!-- Dollar sign on box -->
                             <text x="24" y="38" text-anchor="middle" fill="currentColor" font-size="16" font-family="Space Grotesk" font-weight="700">$</text>
                             <!-- Arrows indicating shipping/return -->
-                            <path d="M8 8L4 12L8 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M40 8L44 12L40 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M8 8L4 12L8 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M40 8L44 12L40 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </div>
                     <h3>Ship & Earn</h3>
@@ -331,4 +338,5 @@
     <!-- JavaScript file - all functionality separated from HTML -->
     <script src="js/main.js"></script>
 </body>
+
 </html>

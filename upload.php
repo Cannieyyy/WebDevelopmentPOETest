@@ -1,3 +1,8 @@
+<?php
+require_once 'includes/auth.php';
+$currentUser = getCurrentUser();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body class="auth-page">
-    <!-- Navigation -->
     <nav class="navbar auth-navbar" id="navbar">
         <div class="nav-container">
             <a href="index.php" class="logo">
@@ -33,9 +32,7 @@
     </nav>
 
     <div class="auth-container">
-        
         <div class="auth-visual">
-            
             <div class="slideshow-container auth-slideshow-height">
                 <div class="slideshow-slide active">
                     <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1200" alt="Sustainable fashion">
@@ -56,19 +53,15 @@
                     </div>
                 </div>
                 
-                
                 <div class="slideshow-dots">
                     <button class="dot active" aria-label="Slide 1"></button>
                     <button class="dot" aria-label="Slide 2"></button>
                     <button class="dot" aria-label="Slide 3"></button>
                 </div>
             </div>
-            
-            <!-- Gradient overlay for text readability -->
             <div class="auth-overlay"></div>
         </div>
 
-        <!-- Right Side: Login Form -->
         <div class="auth-form-section">
             <div class="auth-form-container">
                 <a href="index.php" class="back-link">
@@ -81,6 +74,8 @@
                 <h1>Sign In</h1>
                 <p class="auth-subtitle">Enter your credentials to access your account</p>
                 
+                <div id="errorMessage" class="error-message" style="display: none;"></div>
+                
                 <form class="auth-form" id="loginForm">
                     <div class="form-group">
                         <label for="username">Username or Email</label>
@@ -89,7 +84,7 @@
                                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                                 <circle cx="12" cy="7" r="4"/>
                             </svg>
-                            <input type="text" id="username" class="form-input" required placeholder="you@example.com">
+                            <input type="text" id="username" name="username" class="form-input" required placeholder="username or you@example.com">
                         </div>
                     </div>
                     
@@ -100,7 +95,7 @@
                                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
                                 <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                             </svg>
-                            <input type="password" id="password" class="form-input" required placeholder="••••••••">
+                            <input type="password" id="password" name="password" class="form-input" required placeholder="••••••••">
                             <button type="button" class="toggle-password" aria-label="Toggle password visibility">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
@@ -112,7 +107,7 @@
 
                     <div class="form-options">
                         <label class="checkbox-label">
-                            <input type="checkbox" class="custom-checkbox">
+                            <input type="checkbox" class="custom-checkbox" id="rememberMe">
                             <span class="checkmark">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                                     <polyline points="20 6 9 17 4 12"/>
@@ -123,7 +118,7 @@
                         <a href="#" class="link">Forgot password?</a>
                     </div>
 
-                    <button type="submit" class="btn btn-large btn-primary auth-submit">
+                    <button type="submit" class="btn btn-large btn-primary auth-submit" id="submitBtn">
                         Sign In
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <line x1="5" y1="12" x2="19" y2="12"/>
@@ -162,6 +157,118 @@
         </div>
     </div>
 
-    <script src="js/main.js"></script>
+    <style>
+        .error-message {
+            background: rgba(255, 71, 87, 0.1);
+            border: 1px solid var(--accent-danger);
+            color: var(--accent-danger);
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-lg);
+            font-size: 0.875rem;
+        }
+        
+        .success-message {
+            background: rgba(6, 255, 165, 0.1);
+            border: 1px solid var(--accent-success);
+            color: var(--accent-success);
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-lg);
+            font-size: 0.875rem;
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+    </style>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('loginForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const errorDiv = document.getElementById('errorMessage');
+        
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Clear previous messages
+            errorDiv.style.display = 'none';
+            errorDiv.innerHTML = '';
+            
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            
+            if (!username || !password) {
+                showError('Please enter username/email and password');
+                return;
+            }
+            
+            // Disable button and show loading state
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Signing In...';
+            
+            const formData = new FormData();
+            formData.append('username', username);
+            formData.append('password', password);
+            
+            try {
+                const response = await fetch('login_handler.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showSuccess(data.message);
+                    setTimeout(() => {
+                        window.location.href = data.redirect;
+                    }, 1500);
+                } else {
+                    showError(data.message);
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Sign In <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
+                }
+            } catch (error) {
+                showError('An error occurred. Please try again.');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Sign In <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
+            }
+        });
+        
+        function showError(message) {
+            errorDiv.innerHTML = message;
+            errorDiv.className = 'error-message';
+            errorDiv.style.display = 'block';
+            errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        
+        function showSuccess(message) {
+            errorDiv.innerHTML = message;
+            errorDiv.className = 'success-message';
+            errorDiv.style.display = 'block';
+            errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        
+        // Toggle password visibility
+        const toggleButtons = document.querySelectorAll('.toggle-password');
+        toggleButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const input = this.previousElementSibling;
+                const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                input.setAttribute('type', type);
+            });
+        });
+        
+        // Enter key submission
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                form.dispatchEvent(new Event('submit'));
+            }
+        });
+    });
+    </script>
 </body>
 </html>

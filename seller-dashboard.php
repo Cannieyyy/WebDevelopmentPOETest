@@ -1,4 +1,17 @@
-<!DOCTYPE html>
+<?php
+// seller-dashboard.php
+require_once 'includes/auth.php';
+requireLogin();
+
+// Only sellers and admins can access this page
+if (!isSeller() && !isAdmin()) {
+    // If buyer tries to access, redirect to browse.php
+    header("Location: browse.php");
+    exit();
+}
+
+$currentUser = getCurrentUser();
+?><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -46,7 +59,7 @@
                 <div class="seller-info">
                     <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200" alt="Store" class="store-avatar">
                     <div class="seller-details">
-                        <h1>Sarah's Closet</h1>
+                        <h1>Welcome back, <?php echo htmlspecialchars($currentUser['firstname']); ?>!</h1>
                         <span class="seller-status verified">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                                 <polyline points="20 6 9 17 4 12"/>

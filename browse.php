@@ -1,5 +1,11 @@
+<?php
+require_once 'includes/auth.php';
+$currentUser = getCurrentUser();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +13,7 @@
     <link rel="stylesheet" href="css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <!-- Navigation - Same structure as index.php for consistency -->
     <nav class="navbar" id="navbar">
@@ -29,8 +36,8 @@
             <div class="nav-actions">
                 <a href="cart.php" class="icon-btn cart-btn" aria-label="Shopping cart">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M9 2L6 7H3L5.5 20H18.5L21 7H18L15 2H9Z"/>
-                        <path d="M9 11V17M15 11V17"/>
+                        <path d="M9 2L6 7H3L5.5 20H18.5L21 7H18L15 2H9Z" />
+                        <path d="M9 11V17M15 11V17" />
                     </svg>
                     <span class="cart-count" id="cartCount">0</span>
                 </a>
@@ -48,14 +55,21 @@
                 <input type="text" class="search-input" placeholder="Search for items, brands, or styles..." id="searchInput">
                 <button class="search-btn" aria-label="Search">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="8"/>
-                        <path d="M21 21L16.65 16.65"/>
+                        <circle cx="11" cy="11" r="8" />
+                        <path d="M21 21L16.65 16.65" />
                     </svg>
                 </button>
             </div>
         </div>
     </header>
 
+    <?php if (isLoggedIn() && isBuyer()): ?>
+        <div class="welcome-banner" style="background: linear-gradient(135deg, rgba(0,245,212,0.1) 0%, rgba(0,187,249,0.1) 100%); padding: var(--space-lg); margin-bottom: var(--space-xl); border-radius: var(--radius-lg); text-align: center;">
+            <h3>Welcome back, <?php echo htmlspecialchars($currentUser['firstname']); ?>! 👋</h3>
+            <p style="color: var(--text-secondary); margin-top: var(--space-sm);">Discover amazing pre-loved fashion just for you.</p>
+        </div>
+    <?php endif; ?>
+    
     <!-- Main Browse Layout -->
     <main class="browse-layout">
         <!-- Sidebar Filters - Collapsible on mobile -->
@@ -64,7 +78,7 @@
                 <h3>Filters</h3>
                 <button class="btn btn-text" id="clearFilters">Clear all</button>
             </div>
-            
+
             <!-- Filter Groups -->
             <div class="filter-group">
                 <h4 class="filter-title">Category</h4>
@@ -141,9 +155,9 @@
         <!-- Mobile Filter Toggle -->
         <button class="mobile-filter-toggle" id="mobileFilterToggle">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="4" y1="6" x2="20" y2="6"/>
-                <line x1="4" y1="12" x2="20" y2="12"/>
-                <line x1="4" y1="18" x2="20" y2="18"/>
+                <line x1="4" y1="6" x2="20" y2="6" />
+                <line x1="4" y1="12" x2="20" y2="12" />
+                <line x1="4" y1="18" x2="20" y2="18" />
             </svg>
             Filters
         </button>
@@ -223,4 +237,5 @@
 
     <script src="js/main.js"></script>
 </body>
+
 </html>

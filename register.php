@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,8 +9,6 @@
 </head>
 <body class="auth-page">
 
-
-    <!-- Navigation -->
     <nav class="navbar auth-navbar" id="navbar">
         <div class="nav-container">
             <a href="index.php" class="logo">
@@ -36,7 +33,6 @@
     </nav>
 
     <div class="auth-container">
-        <!-- Left Side: Uses EXISTING slideshow classes from index -->
         <div class="auth-visual">
             <div class="slideshow-container auth-slideshow-height">
                 <div class="slideshow-slide active">
@@ -68,7 +64,6 @@
             <div class="auth-overlay"></div>
         </div>
 
-        <!-- Right Side: Registration Form -->
         <div class="auth-form-section">
             <div class="auth-form-container">
                 <a href="index.php" class="back-link">
@@ -81,8 +76,10 @@
                 <h1>Create Account</h1>
                 <p class="auth-subtitle">Join our community in seconds</p>
                 
-            <!--post method to allow php to validate-->
-                <form class="auth-form" id="registerForm" method="POST" action="">
+                <form class="auth-form" id="registerForm" method="POST">
+                    <!-- Add error message div -->
+                    <div id="errorMessage" class="error-message" style="display: none;"></div>
+                    
                     <div class="form-row">
                         <div class="form-group">
                             <label for="firstName">First Name</label>
@@ -91,13 +88,13 @@
                                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                                     <circle cx="12" cy="7" r="4"/>
                                 </svg>
-                                <input type="text" id="firstName" class="form-input" required placeholder="Jane">
+                                <input type="text" id="firstName" name="firstName" class="form-input" required placeholder="Jane">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="lastName">Last Name</label>
                             <div class="input-wrapper">
-                                <input type="text" id="lastName" class="form-input" required placeholder="Doe">
+                                <input type="text" id="lastName" name="lastName" class="form-input" required placeholder="Doe">
                             </div>
                         </div>
                     </div>
@@ -109,7 +106,7 @@
                                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
                                 <polyline points="22,6 12,13 2,6"/>
                             </svg>
-                            <input type="email" id="email" class="form-input" required placeholder="jane@example.com">
+                            <input type="email" id="email" name="email" class="form-input" required placeholder="jane@example.com">
                         </div>
                     </div>
 
@@ -122,7 +119,7 @@
                                 <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
                                 <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
                             </svg>
-                            <input type="text" id="regUsername" name="username" class="form-input" required placeholder="fashionista_2024">
+                            <input type="text" id="regUsername" name="regUsername" class="form-input" required placeholder="fashionista_2024">
                         </div>
                     </div>
 
@@ -176,7 +173,7 @@
                                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
                                 <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                             </svg>
-                            <input type="password" id="regPassword" name="password" class="form-input" required placeholder="Min 8 characters">
+                            <input type="password" id="regPassword" name="regPassword" class="form-input" required placeholder="Min 8 characters">
                             <button type="button" class="toggle-password">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
@@ -216,13 +213,13 @@
                                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
                                 <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                             </svg>
-                            <input type="password" id="confirmPassword" class="form-input" required placeholder="Confirm your password">
+                            <input type="password" id="confirmPassword" name="confirmPassword" class="form-input" required placeholder="Confirm your password">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="checkbox-label terms-label">
-                            <input type="checkbox" required class="custom-checkbox">
+                            <input type="checkbox" required class="custom-checkbox" id="termsCheckbox">
                             <span class="checkmark">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                                     <polyline points="20 6 9 17 4 12"/>
@@ -232,7 +229,7 @@
                         </label>
                     </div>
 
-                    <button type="submit" class="btn btn-large btn-primary auth-submit">
+                    <button type="submit" class="btn btn-large btn-primary auth-submit" id="submitBtn">
                         Create Account
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <line x1="5" y1="12" x2="19" y2="12"/>
@@ -249,6 +246,162 @@
         </div>
     </div>
 
-    <script src="js/main.js"></script>
+    <style>
+        .error-message {
+            background: rgba(255, 71, 87, 0.1);
+            border: 1px solid var(--accent-danger);
+            color: var(--accent-danger);
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-lg);
+            font-size: 0.875rem;
+        }
+        
+        .success-message {
+            background: rgba(6, 255, 165, 0.1);
+            border: 1px solid var(--accent-success);
+            color: var(--accent-success);
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-lg);
+            font-size: 0.875rem;
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+    </style>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('registerForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const errorDiv = document.getElementById('errorMessage');
+        
+        // Password validation
+        const passwordInput = document.getElementById('regPassword');
+        const confirmInput = document.getElementById('confirmPassword');
+        const reqLength = document.querySelector('[data-req="length"]');
+        const reqNumber = document.querySelector('[data-req="number"]');
+        const reqSpecial = document.querySelector('[data-req="special"]');
+        
+        function validatePassword() {
+            const password = passwordInput.value;
+            let isValid = true;
+            
+            // Check length
+            if (password.length >= 8) {
+                reqLength.classList.add('valid');
+            } else {
+                reqLength.classList.remove('valid');
+                isValid = false;
+            }
+            
+            // Check number
+            if (/\d/.test(password)) {
+                reqNumber.classList.add('valid');
+            } else {
+                reqNumber.classList.remove('valid');
+                isValid = false;
+            }
+            
+            // Check special character
+            if (/[!@#$%^&*]/.test(password)) {
+                reqSpecial.classList.add('valid');
+            } else {
+                reqSpecial.classList.remove('valid');
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+        
+        passwordInput.addEventListener('input', validatePassword);
+        
+        // Form submission
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Clear previous messages
+            errorDiv.style.display = 'none';
+            errorDiv.innerHTML = '';
+            
+            // Validate passwords match
+            if (passwordInput.value !== confirmInput.value) {
+                showError('Passwords do not match');
+                return;
+            }
+            
+            // Validate password strength
+            if (!validatePassword()) {
+                showError('Please meet all password requirements');
+                return;
+            }
+            
+            // Validate terms
+            const termsCheckbox = document.getElementById('termsCheckbox');
+            if (!termsCheckbox.checked) {
+                showError('Please agree to the Terms of Service');
+                return;
+            }
+            
+            // Disable button and show loading state
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Creating Account...';
+            
+            // Collect form data
+            const formData = new FormData(form);
+            
+            try {
+                const response = await fetch('register_handler.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showSuccess(data.message);
+                    setTimeout(() => {
+                        window.location.href = data.redirect;
+                    }, 2000);
+                } else {
+                    showError(data.message);
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Create Account <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
+                }
+            } catch (error) {
+                showError('An error occurred. Please try again.');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Create Account <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
+            }
+        });
+        
+        function showError(message) {
+            errorDiv.innerHTML = message;
+            errorDiv.className = 'error-message';
+            errorDiv.style.display = 'block';
+            errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        
+        function showSuccess(message) {
+            errorDiv.innerHTML = message;
+            errorDiv.className = 'success-message';
+            errorDiv.style.display = 'block';
+            errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        
+        // Toggle password visibility
+        const toggleButtons = document.querySelectorAll('.toggle-password');
+        toggleButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const input = this.previousElementSibling;
+                const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                input.setAttribute('type', type);
+            });
+        });
+    });
+    </script>
 </body>
 </html>
