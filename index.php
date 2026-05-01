@@ -1,6 +1,11 @@
 <?php
-require_once 'includes/auth.php';
-$currentUser = getCurrentUser();
+session_start();
+require_once 'DBConn.php';
+
+// Check if user is logged in
+$isLoggedIn = isset($_SESSION['userID']) && isset($_SESSION['logged_in']);
+$userRole = $_SESSION['role'] ?? '';
+$userName = $_SESSION['firstName'] ?? '';
 ?>
 
 <!DOCTYPE html>
@@ -21,28 +26,32 @@ $currentUser = getCurrentUser();
     <!-- Navigation - consistent across all pages -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <!-- Logo with brand identity -->
+            <!-- Logo -->
             <a href="index.php" class="logo">
                 <span class="logo-icon">◆</span>
                 <span class="logo-text">PasTimes</span>
             </a>
 
-            <!-- Mobile menu toggle button - only visible on small screens -->
+            <!-- Mobile menu toggle button -->
             <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
 
-            <!-- Navigation links - collapsible on mobile -->
+            <!-- Navigation links -->
             <ul class="nav-menu" id="navMenu">
                 <li><a href="index.php" class="nav-link active">Home</a></li>
                 <li><a href="browse.php" class="nav-link">Browse</a></li>
-                <li><a href="seller-dashboard.php" class="nav-link">Sell</a></li>
+                <?php if ($isLoggedIn && ($userRole == 'seller' || $userRole == 'both')): ?>
+                    <li><a href="seller-dashboard.php" class="nav-link">Sell</a></li>
+                <?php else: ?>
+                    <li><a href="seller-dashboard.php" class="nav-link">Sell</a></li>
+                <?php endif; ?>
                 <li><a href="messages.php" class="nav-link">Messages</a></li>
             </ul>
 
-            <!-- User actions section -->
+            <!-- User actions section with Logout button -->
             <div class="nav-actions">
                 <a href="cart.php" class="icon-btn cart-btn" aria-label="Shopping cart">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -51,34 +60,79 @@ $currentUser = getCurrentUser();
                     </svg>
                     <span class="cart-count" id="cartCount">0</span>
                 </a>
-                <a href="login.php" class="btn btn-outline" id="loginBtn">Login</a>
-                <a href="register.php" class="btn btn-primary">Get Started</a>
+
+                <?php if ($isLoggedIn): ?>
+                    <!-- User info and logout button when logged in -->
+                    <div class="user-info">
+                        <span class="user-greeting"> <?php echo htmlspecialchars($userName); ?></span>
+                        <a href="logout.php" class="btn btn-outline logout-btn">
+                            Logout
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                                <polyline points="16 17 21 12 16 7" />
+                                <line x1="21" y1="12" x2="9" y2="12" />
+                            </svg>
+                        </a>
+                    </div>
+                <?php else: ?>
+                    <!-- Login button when not logged in -->
+                    <a href="login.php" class="btn btn-outline">Login</a>
+                    <a href="register.php" class="btn btn-primary">Get Started</a>
+                <?php endif; ?>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section - Clean with Slideshow -->
+    <!-- Hero Section with Personalized Welcome Message -->
     <header class="hero">
         <div class="hero-content">
             <div class="hero-text">
-                <h1 class="hero-title">
-                    Fashion that<br>
-                    <span class="gradient-text">doesn't cost</span><br>
-                    the Earth
-                </h1>
-                <p class="hero-subtitle">
-                    Buy and sell pre-loved fashion. Join the sustainable revolution
-                    where style meets consciousness.
-                </p>
+                <?php if ($isLoggedIn && ($userRole == 'buyer' || $userRole == 'both')): ?>
+                    <h1 class="hero-title">
+                        Welcome back, <?php echo htmlspecialchars($userName); ?>! <span class="gradient-text"></span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Discover amazing pre-loved fashion just for you.
+                    </p>
+                <?php elseif ($isLoggedIn && $userRole == 'seller'): ?>
+                    <h1 class="hero-title">
+                        Welcome back, <span class="gradient-text">Seller!</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Ready to list new items? Your customers are waiting!
+                    </p>
+                <?php else: ?>
+                    <h1 class="hero-title">
+                        Fashion that<br>
+                        <span class="gradient-text">doesn't cost</span><br>
+                        the Earth
+                    </h1>
+                    <p class="hero-subtitle">
+                        Buy and sell pre-loved fashion. Join the sustainable revolution
+                        where style meets consciousness.
+                    </p>
+                <?php endif; ?>
+
                 <div class="hero-cta">
-                    <a href="browse.php" class="btn btn-large btn-primary">
-                        Start Exploring
-                        <span class="btn-arrow">→</span>
-                    </a>
-                    <a href="seller-dashboard.php" class="btn btn-large btn-glass">
-                        Start Selling
-                    </a>
+                    <?php if ($isLoggedIn && ($userRole == 'seller' || $userRole == 'both')): ?>
+                        <a href="seller-dashboard.php" class="btn btn-large btn-primary">
+                            Go to Dashboard
+                            <span class="btn-arrow">→</span>
+                        </a>
+                        <a href="upload.php" class="btn btn-large btn-glass">
+                            List New Item
+                        </a>
+                    <?php else: ?>
+                        <a href="browse.php" class="btn btn-large btn-primary">
+                            Start Exploring
+                            <span class="btn-arrow">→</span>
+                        </a>
+                        <a href="seller-dashboard.php" class="btn btn-large btn-glass">
+                            Start Selling
+                        </a>
+                    <?php endif; ?>
                 </div>
+
                 <div class="hero-stats">
                     <div class="stat">
                         <span class="stat-number">50K+</span>
@@ -95,10 +149,9 @@ $currentUser = getCurrentUser();
                 </div>
             </div>
 
-            <!-- Clean Slideshow on Right -->
+            <!-- Slideshow (keep as is) -->
             <div class="hero-visual">
                 <div class="gradient-orb"></div>
-
                 <div class="slideshow-container">
                     <div class="slideshow-slide active">
                         <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800" alt="Woman shopping sustainable fashion">
@@ -118,8 +171,6 @@ $currentUser = getCurrentUser();
                             <span>Sell Your Style</span>
                         </div>
                     </div>
-
-                    <!-- Slideshow Controls -->
                     <div class="slideshow-dots">
                         <button class="dot active" aria-label="Slide 1"></button>
                         <button class="dot" aria-label="Slide 2"></button>
@@ -128,7 +179,6 @@ $currentUser = getCurrentUser();
                 </div>
             </div>
         </div>
-
     </header>
 
     <!-- Categories Section -->

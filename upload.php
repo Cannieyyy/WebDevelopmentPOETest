@@ -1,10 +1,6 @@
-<?php
-require_once 'includes/auth.php';
-$currentUser = getCurrentUser();
-?>
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +8,7 @@ $currentUser = getCurrentUser();
     <link rel="stylesheet" href="css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <nav class="navbar" id="navbar">
         <div class="nav-container">
@@ -27,7 +24,7 @@ $currentUser = getCurrentUser();
             <div class="nav-actions">
                 <a href="cart.php" class="icon-btn cart-btn">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M9 2L6 7H3L5.5 20H18.5L21 7H18L15 2H9Z"/>
+                        <path d="M9 2L6 7H3L5.5 20H18.5L21 7H18L15 2H9Z" />
                     </svg>
                     <span class="cart-count" id="cartCount">0</span>
                 </a>
@@ -48,7 +45,7 @@ $currentUser = getCurrentUser();
                     <section class="upload-section">
                         <h2>Photos</h2>
                         <p class="section-hint">Add up to 8 photos. First photo will be the cover.</p>
-                        
+
                         <div class="image-upload-grid" id="imageGrid">
                             <div class="upload-zone" id="uploadZone">
                                 <input type="file" id="fileInput" multiple accept="image/*" hidden>
@@ -75,7 +72,7 @@ $currentUser = getCurrentUser();
                     <!-- Right Column: Details -->
                     <section class="upload-section">
                         <h2>Item Details</h2>
-                        
+
                         <div class="form-group">
                             <label for="itemTitle">Title *</label>
                             <input type="text" id="itemTitle" class="form-input" required placeholder="e.g., Vintage Levi's Denim Jacket">
@@ -188,4 +185,5 @@ $currentUser = getCurrentUser();
 
     <script src="js/main.js"></script>
 </body>
+
 </html>

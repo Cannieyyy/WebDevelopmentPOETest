@@ -1,10 +1,6 @@
-<?php
-require_once 'includes/auth.php';
-$currentUser = getCurrentUser();
-?>
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +8,7 @@ $currentUser = getCurrentUser();
     <link rel="stylesheet" href="css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <nav class="navbar" id="navbar">
         <div class="nav-container">
@@ -33,8 +30,8 @@ $currentUser = getCurrentUser();
             <div class="nav-actions">
                 <a href="cart.php" class="icon-btn cart-btn active" aria-label="Shopping cart">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M9 2L6 7H3L5.5 20H18.5L21 7H18L15 2H9Z"/>
-                        <path d="M9 11V17M15 11V17"/>
+                        <path d="M9 2L6 7H3L5.5 20H18.5L21 7H18L15 2H9Z" />
+                        <path d="M9 11V17M15 11V17" />
                     </svg>
                     <span class="cart-count" id="cartCount">3</span>
                 </a>
@@ -46,7 +43,7 @@ $currentUser = getCurrentUser();
     <main class="cart-page">
         <div class="container">
             <h1 class="page-title">Shopping Cart</h1>
-            
+
             <!-- Centered wrapper added around cart-layout -->
             <div class="cart-wrapper">
                 <div class="cart-layout">
@@ -162,4 +159,5 @@ $currentUser = getCurrentUser();
 
     <script src="js/main.js"></script>
 </body>
+
 </html>

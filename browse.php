@@ -1,6 +1,16 @@
 <?php
-require_once 'includes/auth.php';
-$currentUser = getCurrentUser();
+session_start();
+require_once 'DBConn.php';
+
+$isLoggedIn = isset($_SESSION['userID']) && isset($_SESSION['logged_in']);
+$userRole = $_SESSION['role'] ?? '';
+$userName = $_SESSION['firstName'] ?? '';
+
+if ($userRole != 'buyer' && $userRole != 'both') {
+    $_SESSION['error'] = 'Access denied. Only buyers can access the dashboard.';
+    header('Location: index.php');
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -15,7 +25,7 @@ $currentUser = getCurrentUser();
 </head>
 
 <body>
-    <!-- Navigation - Same structure as index.php for consistency -->
+    <!-- Navigation -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
             <a href="index.php" class="logo">
@@ -30,7 +40,11 @@ $currentUser = getCurrentUser();
             <ul class="nav-menu" id="navMenu">
                 <li><a href="index.php" class="nav-link">Home</a></li>
                 <li><a href="browse.php" class="nav-link active">Browse</a></li>
-                <li><a href="seller-dashboard.php" class="nav-link">Sell</a></li>
+                <?php if ($isLoggedIn && ($userRole == 'seller' || $userRole == 'both')): ?>
+                    <li><a href="seller-dashboard.php" class="nav-link">Sell</a></li>
+                <?php else: ?>
+                    <li><a href="seller-dashboard.php" class="nav-link">Sell</a></li>
+                <?php endif; ?>
                 <li><a href="messages.php" class="nav-link">Messages</a></li>
             </ul>
             <div class="nav-actions">
@@ -41,8 +55,23 @@ $currentUser = getCurrentUser();
                     </svg>
                     <span class="cart-count" id="cartCount">0</span>
                 </a>
-                <a href="login.php" class="btn btn-outline">Login</a>
-                <a href="register.php" class="btn btn-primary">Get Started</a>
+
+                <?php if ($isLoggedIn): ?>
+                    <div class="user-info">
+                        <span class="user-greeting"><?php echo htmlspecialchars($userName); ?></span>
+                        <a href="logout.php" class="btn btn-outline logout-btn">
+                            Logout
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                                <polyline points="16 17 21 12 16 7" />
+                                <line x1="21" y1="12" x2="9" y2="12" />
+                            </svg>
+                        </a>
+                    </div>
+                <?php else: ?>
+                    <a href="login.php" class="btn btn-outline">Login</a>
+                    <a href="register.php" class="btn btn-primary">Get Started</a>
+                <?php endif; ?>
             </div>
         </div>
     </nav>
@@ -63,13 +92,6 @@ $currentUser = getCurrentUser();
         </div>
     </header>
 
-    <?php if (isLoggedIn() && isBuyer()): ?>
-        <div class="welcome-banner" style="background: linear-gradient(135deg, rgba(0,245,212,0.1) 0%, rgba(0,187,249,0.1) 100%); padding: var(--space-lg); margin-bottom: var(--space-xl); border-radius: var(--radius-lg); text-align: center;">
-            <h3>Welcome back, <?php echo htmlspecialchars($currentUser['firstname']); ?>! 👋</h3>
-            <p style="color: var(--text-secondary); margin-top: var(--space-sm);">Discover amazing pre-loved fashion just for you.</p>
-        </div>
-    <?php endif; ?>
-    
     <!-- Main Browse Layout -->
     <main class="browse-layout">
         <!-- Sidebar Filters - Collapsible on mobile -->

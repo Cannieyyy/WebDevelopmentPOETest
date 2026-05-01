@@ -1,17 +1,14 @@
-<?php
-require_once 'includes/auth.php';
-$currentUser = getCurrentUser();
-?>
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8"> 
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - PasTimes</title>
     <link rel="stylesheet" href="css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
+
 <body class="admin-body">
     <div class="admin-layout">
         <!-- Admin Sidebar -->
@@ -221,4 +218,5 @@ $currentUser = getCurrentUser();
 
     <script src="js/main.js"></script>
 </body>
+
 </html>

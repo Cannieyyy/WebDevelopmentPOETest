@@ -1,10 +1,6 @@
-<?php
-require_once 'includes/auth.php';
-$currentUser = getCurrentUser();
-?>
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +8,7 @@ $currentUser = getCurrentUser();
     <link rel="stylesheet" href="css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <nav class="navbar" id="navbar">
         <div class="nav-container">
@@ -33,7 +30,7 @@ $currentUser = getCurrentUser();
             <div class="nav-actions">
                 <a href="cart.php" class="icon-btn cart-btn">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M9 2L6 7H3L5.5 20H18.5L21 7H18L15 2H9Z"/>
+                        <path d="M9 2L6 7H3L5.5 20H18.5L21 7H18L15 2H9Z" />
                     </svg>
                     <span class="cart-count" id="cartCount">0</span>
                 </a>
@@ -105,7 +102,7 @@ $currentUser = getCurrentUser();
 
                     <div class="chat-messages" id="chatMessages">
                         <div class="message-date">Today</div>
-                        
+
                         <div class="message received">
                             <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100" alt="User" class="message-avatar">
                             <div class="message-content">
@@ -165,4 +162,5 @@ $currentUser = getCurrentUser();
 
     <script src="js/main.js"></script>
 </body>
+
 </html>

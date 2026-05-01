@@ -1,0 +1,7 @@
+John Doe j.doe@example.com $2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi buyer
+Jane Smith j.smith@example.com $2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi seller
+Sarah Johnson s.johnson@example.com $2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi both
+Michael Chen m.chen@example.com $2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi buyer
+Emily Wilson e.wilson@example.com $2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi seller
+Keoagile Mafora keoagilemafora@gmail.com $2y$10$oxn4F3MKcjCWPF8YwVjwx.9nxnmOsdUhln0MjRM/kpJYzb74ufK5C buyer
+Kopano Leshope kopanoleshope@gmail.com $2y$10$SxYHRpPz9ueNzZrlWDXDteDVSu9s3...Vpli.w.gPrU0RSoRD3vdi seller
