@@ -133,8 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ?>
 
                 <div class="admin-user">
-                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100" alt="Admin">
-
+                <img src="https://ui-avatars.com/api/?name=U&background=111827&color=ffffff&size=40&rounded=true" alt="User">
                     <div>
                         <strong>
                             <?php echo htmlspecialchars($adminName ?: 'Admin User'); ?>
@@ -212,8 +211,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <tr>
                                     <td>
                                         <div class="table-user">
-                                            <img src="https://via.placeholder.com/40" alt="">
-                                            <div>
+                                        <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="User">                                            <div>
                                                 <strong><?php echo htmlspecialchars($user['firstName'] . ' ' . $user['lastName']); ?></strong>
                                                 <span><?php echo htmlspecialchars($user['email']); ?></span>
                                             </div>
@@ -280,8 +278,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <tr>
                                 <td>
                                     <div class="table-user">
-                                        <img src="https://via.placeholder.com/40" alt="">
-                                        <div>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="User">                                        <div>
                                             <strong><?php echo htmlspecialchars($user['firstName'] . ' ' . $user['lastName']); ?></strong>
                                             <span><?php echo htmlspecialchars($user['email']); ?></span>
                                         </div>
