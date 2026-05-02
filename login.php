@@ -5,66 +5,96 @@ require_once 'DBConn.php';
 $error = '';
 $success = '';
 
-// If user is already logged in, redirect to homepage
 if (isset($_SESSION['userID'])) {
     header('Location: index.php');
     exit();
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
     $username = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
-    $remember = isset($_POST['remember']) ? true : false;
 
-    // Validation
     if (empty($username)) {
         $error = 'Please enter your username or email address.';
     } elseif (empty($password)) {
         $error = 'Please enter your password.';
     } else {
+
         try {
-            // Check if login is with username or email
-            $stmt = $pdo->prepare("SELECT * FROM tblUser WHERE username = ? OR email = ?");
-            $stmt->execute([$username, $username]);
-            $user = $stmt->fetch();
 
-            if ($user) {
-                // Verify password
-                if (password_verify($password, $user['password'])) {
-                    // Check if user is active
-                    if ($user['userStatus'] !== 'active') {
-                        $error = 'Your account is ' . $user['userStatus'] . '. Please contact support.';
-                    } else {
-                        // Store user info in session
-                        $_SESSION['userID'] = $user['userID'];
-                        $_SESSION['username'] = $user['username'];
-                        $_SESSION['firstName'] = $user['firstName'];
-                        $_SESSION['lastName'] = $user['lastName'];
-                        $_SESSION['email'] = $user['email'];
-                        $_SESSION['role'] = $user['role']; // This is important for role checking
-                        $_SESSION['logged_in'] = true;
+            
+               //check if user is admin 
+              
+            $adminStmt = $pdo->prepare("
+                SELECT * 
+                FROM tblAdmin 
+                WHERE username = ? OR email = ?
+                LIMIT 1
+            ");
+            $adminStmt->execute([$username, $username]);
+            $admin = $adminStmt->fetch();
 
-                        // Check if admin
-                        $adminStmt = $pdo->prepare("SELECT * FROM tblAdmin WHERE username = ? OR email = ?");
-                        $adminStmt->execute([$user['username'], $user['email']]);
-                        if ($adminStmt->fetch()) {
-                            $_SESSION['isAdmin'] = true;
-                        }
+            if ($admin) {
 
-                        // Redirect based on role (optional)
-                        if ($user['role'] == 'seller' || $user['role'] == 'both') {
-                            header('Location: seller-dashboard.php');
-                        } else {
-                            header('Location: index.php');
-                        }
-                        exit();
-                    }
+                if (password_verify($password, $admin['password'])) {
+
+                    // login as admin
+                    $_SESSION['userID'] = $admin['adminID'];
+                    $_SESSION['username'] = $admin['username'];
+                    $_SESSION['email'] = $admin['email'];
+                    $_SESSION['role'] = 'admin';
+                    $_SESSION['isAdmin'] = true;
+                    $_SESSION['logged_in'] = true;
+
+                    header('Location: admin-dashboard.php');
+                    exit();
+
                 } else {
-                    $error = 'Invalid password. Please try again.';
+                    $error = 'Invalid admin password.';
                 }
+
             } else {
-                $error = 'No account found with that username or email address.';
+
+                //check if regular user
+                $stmt = $pdo->prepare("
+                    SELECT * 
+                    FROM tblUser 
+                    WHERE username = ? OR email = ?
+                    LIMIT 1
+                ");
+                $stmt->execute([$username, $username]);
+                $user = $stmt->fetch();
+
+                if ($user) {
+
+                    if (password_verify($password, $user['password'])) {
+
+                        if ($user['userStatus'] !== 'active') {
+                            $error = 'Your account is pending admin approval.';
+                        } else {
+
+                            $_SESSION['userID'] = $user['userID'];
+                            $_SESSION['username'] = $user['username'];
+                            $_SESSION['firstName'] = $user['firstName'];
+                            $_SESSION['lastName'] = $user['lastName'];
+                            $_SESSION['email'] = $user['email'];
+                            $_SESSION['role'] = $user['role'];
+                            $_SESSION['logged_in'] = true;
+
+                            header('Location: index.php');
+                            exit();
+                        }
+
+                    } else {
+                        $error = 'Invalid password.';
+                    }
+
+                } else {
+                    $error = 'No account found with that username or email.';
+                }
             }
+
         } catch (PDOException $e) {
             error_log("Login error: " . $e->getMessage());
             $error = 'Login failed. Please try again later.';

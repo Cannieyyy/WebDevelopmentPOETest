@@ -5,6 +5,30 @@
  */
 
 // ==========================================
+// ADMIN EDIT MODAL
+// ==========================================
+
+function openEditModal(userID, status, role) {
+    document.getElementById('editModal').style.display = 'flex';
+
+    document.getElementById('editUserID').value = userID;
+    document.getElementById('editStatus').value = status;
+    document.getElementById('editRole').value = role;
+}
+
+function closeEditModal() {
+    document.getElementById('editModal').style.display = 'none';
+}
+
+// close when clicking outside modal
+window.onclick = function (event) {
+    const modal = document.getElementById('editModal');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+};
+
+// ==========================================
 // STATE MANAGEMENT
 // ==========================================
 const Store = {

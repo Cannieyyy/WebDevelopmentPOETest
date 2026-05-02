@@ -133,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
                 // Insert into database
-                $stmt = $pdo->prepare("INSERT INTO tblUser (firstName, lastName, username, email, password, role, userStatus) VALUES (?, ?, ?, ?, ?, ?, 'active')");
+                $stmt = $pdo->prepare("INSERT INTO tblUser (firstName, lastName, username, email, password, role, userStatus) VALUES (?, ?, ?, ?, ?, ?, 'inactive')");
                 $dbSuccess = $stmt->execute([$firstName, $lastName, $username, $email, $hashedPassword, $role]);
 
                 if ($dbSuccess) {
@@ -141,19 +141,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $textFileSuccess = saveUserToTextFile($firstName, $lastName, $email, $hashedPassword, $role);
 
                     if ($textFileSuccess) {
-                        $success = 'Account created successfully and saved to userData.txt! Redirecting...';
+                         $success = 'Account created successfully! Please wait for admin approval before logging in.';
 
-                        // Auto login after registration
-                        $_SESSION['userID'] = $pdo->lastInsertId();
-                        $_SESSION['username'] = $username;
-                        $_SESSION['firstName'] = $firstName;
-                        $_SESSION['lastName'] = $lastName;
-                        $_SESSION['email'] = $email;
-                        $_SESSION['role'] = $role;
-                        $_SESSION['logged_in'] = true;
-
-                        // Redirect after 2 seconds
-                        echo '<meta http-equiv="refresh" content="2;url=index.php">';
+                        // Redirect to login page
+                        header("refresh:2;url=login.php");
+                        exit();
+                        
                     } else {
                         $error = 'Account created in database but failed to save to text file.';
                     }

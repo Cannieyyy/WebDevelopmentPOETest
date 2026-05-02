@@ -1,3 +1,61 @@
+<?php
+session_start();
+require_once 'DBConn.php';
+
+// only admin allowed
+if (!isset($_SESSION['isAdmin']) || $_SESSION['isAdmin'] !== true) {
+    header('Location: login.php');
+    exit();
+}
+
+// Fetch pending users
+$stmt = $pdo->prepare("SELECT * FROM tblUser WHERE userStatus = 'inactive' ORDER BY userID DESC");
+$stmt->execute();
+$pendingUsers = $stmt->fetchAll();
+
+// Handle approve/reject actions
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    if (isset($_POST['action']) && isset($_POST['userID'])) {
+
+        $userID = intval($_POST['userID']);
+        $action = $_POST['action'];
+        switch ($action) {
+
+            case 'approve':
+                $stmt = $pdo->prepare("UPDATE tblUser SET userStatus = 'active' WHERE userID = ?");
+                $stmt->execute([$userID]);
+                break;
+
+            case 'reject':
+                $stmt = $pdo->prepare("UPDATE tblUser SET userStatus = 'banned' WHERE userID = ?");
+                $stmt->execute([$userID]);
+                break;
+
+            case 'delete':
+                $stmt = $pdo->prepare("DELETE FROM tblUser WHERE userID = ?");
+                $stmt->execute([$userID]);
+                break;
+
+            case 'update':
+                $status = $_POST['status'];
+                $role = $_POST['role'];
+
+                $stmt = $pdo->prepare("
+                    UPDATE tblUser 
+                    SET userStatus = ?, role = ?
+                    WHERE userID = ?
+                ");
+                $stmt->execute([$status, $role, $userID]);
+                break;
+        }
+
+        // refresh page so changes show immediately
+        header("Location: admin-dashboard.php");
+        exit();
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -82,27 +140,7 @@
                         <span>Items: 11</span>
                     </div>
                 </div>
-                <div class="admin-stat-card">
-                    <div class="stat-header">
-                        <h3>Today's Revenue</h3>
-                        <span class="stat-trend up">↑ 8%</span>
-                    </div>
-                    <div class="stat-value">$4,280</div>
-                    <div class="stat-breakdown">
-                        <span>Orders: 45</span>
-                        <span>Avg: $95</span>
-                    </div>
-                </div>
-                <div class="admin-stat-card">
-                    <div class="stat-header">
-                        <h3>Active Listings</h3>
-                        <span class="stat-trend down">↓ 2%</span>
-                    </div>
-                    <div class="stat-value">8,492</div>
-                    <div class="stat-breakdown">
-                        <span>New today: 124</span>
-                    </div>
-                </div>
+                
             </div>
 
             <!-- Pending Verifications Section -->
@@ -127,44 +165,43 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>
-                                    <div class="table-user">
-                                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100" alt="">
-                                        <div>
-                                            <strong>Sarah Johnson</strong>
-                                            <span>sarah@email.com</span>
+                        <?php if (count($pendingUsers) > 0): ?>
+                            <?php foreach ($pendingUsers as $user): ?>
+                                <tr>
+                                    <td>
+                                        <div class="table-user">
+                                            <img src="https://via.placeholder.com/40" alt="">
+                                            <div>
+                                                <strong><?php echo htmlspecialchars($user['firstName'] . ' ' . $user['lastName']); ?></strong>
+                                                <span><?php echo htmlspecialchars($user['email']); ?></span>
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td>Seller Verification</td>
-                                <td>2 hours ago</td>
-                                <td><span class="status-badge pending">Pending</span></td>
-                                <td>
-                                    <button class="btn btn-small btn-success">Approve</button>
-                                    <button class="btn btn-small btn-danger">Reject</button>
-                                    <button class="btn btn-small btn-outline">Review</button>
-                                </td>
-                            </tr>
+                                    </td>
+                                    <td>Account</td>
+                                    <td>Recently</td>
+                                    <td>
+                                        <span class="status-badge pending">Pending</span>
+                                    </td>
+                                    <td>
+                                        <form method="POST" style="display:inline;">
+                                            <input type="hidden" name="userID" value="<?php echo $user['userID']; ?>">
+                                            <input type="hidden" name="action" value="approve">
+                                            <button type="submit" class="btn btn-small btn-success">Approve</button>
+                                        </form>
+
+                                        <form method="POST" style="display:inline;">
+                                            <input type="hidden" name="userID" value="<?php echo $user['userID']; ?>">
+                                            <input type="hidden" name="action" value="reject">
+                                            <button type="submit" class="btn btn-small btn-danger">Reject</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
                             <tr>
-                                <td>
-                                    <div class="table-item">
-                                        <img src="https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?w=100" alt="">
-                                        <div>
-                                            <strong>Vintage Denim Jacket</strong>
-                                            <span>By: Sarah's Closet</span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>Item Listing</td>
-                                <td>3 hours ago</td>
-                                <td><span class="status-badge pending">Pending</span></td>
-                                <td>
-                                    <button class="btn btn-small btn-success">Approve</button>
-                                    <button class="btn btn-small btn-danger">Reject</button>
-                                    <button class="btn btn-small btn-outline">View</button>
-                                </td>
+                                <td colspan="5">No pending users</td>
                             </tr>
+                        <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
@@ -191,31 +228,103 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <?php
+                            $stmt = $pdo->prepare("SELECT * FROM tblUser ORDER BY userID DESC");
+                            $stmt->execute();
+                            $allUsers = $stmt->fetchAll();
+                            ?>
+
+                            <?php foreach ($allUsers as $user): ?>
                             <tr>
                                 <td>
                                     <div class="table-user">
-                                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100" alt="">
+                                        <img src="https://via.placeholder.com/40" alt="">
                                         <div>
-                                            <strong>Jane Cooper</strong>
-                                            <span>jane@example.com</span>
+                                            <strong><?php echo htmlspecialchars($user['firstName'] . ' ' . $user['lastName']); ?></strong>
+                                            <span><?php echo htmlspecialchars($user['email']); ?></span>
                                         </div>
                                     </div>
                                 </td>
-                                <td>Seller</td>
-                                <td><span class="status-badge active">Active</span></td>
-                                <td>Jan 15, 2024</td>
+
+                                <td><?php echo htmlspecialchars($user['role']); ?></td>
+
                                 <td>
-                                    <button class="btn btn-small btn-outline">Edit</button>
-                                    <button class="btn btn-small btn-danger">Delete</button>
+                                    <?php
+                                    $status = $user['userStatus'];
+
+                                    if ($status === 'active') {
+                                        echo '<span class="status-badge active">Active</span>';
+                                    } elseif ($status === 'inactive') {
+                                        echo '<span class="status-badge pending">Pending</span>';
+                                    } elseif ($status === 'banned') {
+                                        echo '<span class="status-badge banned">Banned</span>';
+                                    } else {
+                                        echo '<span class="status-badge">Unknown</span>';
+                                    }
+                                    ?>
+                                </td>
+
+                                <td><?php echo $user['createdAt']; ?></td>
+
+                                <td>
+                                    <button
+                                        class="btn btn-small btn-outline"
+                                        onclick="openEditModal(
+                                            <?= $user['userID'] ?>,
+                                            '<?= $user['userStatus'] ?>',
+                                            '<?= $user['role'] ?>'
+                                        )"
+                                        >
+                                        Edit
+                                    </button>
+
+                                    <!-- DELETE -->
+                                    <form method="POST" style="display:inline;">
+                                        <input type="hidden" name="userID" value="<?php echo $user['userID']; ?>">
+                                        <input type="hidden" name="action" value="delete">
+                                        <button type="submit" class="btn btn-small btn-danger">Delete</button>
+                                    </form>
                                 </td>
                             </tr>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
             </section>
         </main>
     </div>
+   <div id="editModal" class="modal">
+    <div class="modal-content">
 
+        <h2 style="margin: 0;">Edit User</h2>
+
+        <form method="POST" class="modal-form">
+            <input type="hidden" name="userID" id="editUserID">
+            <input type="hidden" name="action" value="update">
+
+            <label>Status</label>
+            <select name="status" id="editStatus">
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+                <option value="banned">Banned</option>
+            </select>
+
+            <label>Role</label>
+            <select name="role" id="editRole">
+                <option value="buyer">Buyer</option>
+                <option value="seller">Seller</option>
+                <option value="both">Both</option>
+            </select>
+
+            <div class="modal-actions">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <button type="button" class="btn btn-outline" onclick="closeEditModal()">Cancel</button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
     <script src="js/main.js"></script>
 </body>
 

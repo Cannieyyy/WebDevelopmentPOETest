@@ -4,4 +4,6 @@ Sarah Johnson s.johnson@example.com $2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.
 Michael Chen m.chen@example.com $2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi buyer
 Emily Wilson e.wilson@example.com $2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi seller
 Keoagile Mafora keoagilemafora@gmail.com $2y$10$oxn4F3MKcjCWPF8YwVjwx.9nxnmOsdUhln0MjRM/kpJYzb74ufK5C buyer
-Kopano Leshope kopanoleshope@gmail.com $2y$10$SxYHRpPz9ueNzZrlWDXDteDVSu9s3...Vpli.w.gPrU0RSoRD3vdi seller
+
+Kopano Leshope kopano.leshope@gmail.com $2y$12$q4IADGhRwq3.AAUUhwPsN.G/tbPQ0253fJ3ahkPxsqOa0WRK2UIsu buyer
+Naledi Zulu naledi@mail.com $2y$12$6CHvuIiQ3K1.rufaI1ByAuu5fUaEJAGAFNJdrDdvURQKgCXxJg4Ly seller
