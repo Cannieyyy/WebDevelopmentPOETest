@@ -13,6 +13,34 @@ $stmt = $pdo->prepare("SELECT * FROM tblUser WHERE userStatus = 'inactive' ORDER
 $stmt->execute();
 $pendingUsers = $stmt->fetchAll();
 
+// TOTAL USERS
+$stmt = $pdo->query("SELECT COUNT(*) AS total FROM tblUser");
+$totalUsers = $stmt->fetch()['total'];
+
+// BUYERS
+$stmt = $pdo->query("SELECT COUNT(*) AS total FROM tblUser WHERE role = 'buyer'");
+$totalBuyers = $stmt->fetch()['total'];
+
+// SELLERS
+$stmt = $pdo->query("SELECT COUNT(*) AS total FROM tblUser WHERE role = 'seller'");
+$totalSellers = $stmt->fetch()['total'];
+
+// BOTH
+$stmt = $pdo->query("SELECT COUNT(*) AS total FROM tblUser WHERE role = 'both'");
+$totalBoth = $stmt->fetch()['total'];
+
+// PENDING (your "inactive")
+$stmt = $pdo->query("SELECT COUNT(*) AS total FROM tblUser WHERE userStatus = 'inactive'");
+$totalPending = $stmt->fetch()['total'];
+
+// BANNED
+$stmt = $pdo->query("SELECT COUNT(*) AS total FROM tblUser WHERE userStatus = 'banned'");
+$totalBanned = $stmt->fetch()['total'];
+
+// ACTIVE
+$stmt = $pdo->query("SELECT COUNT(*) AS total FROM tblUser WHERE userStatus = 'active'");
+$totalActive = $stmt->fetch()['total'];
+
 // Handle approve/reject actions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -97,13 +125,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <span>⚙️</span> Settings
                 </a>
             </nav>
-            <div class="admin-user">
-                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100" alt="Admin">
-                <div>
-                    <strong>Admin User</strong>
-                    <span>Super Admin</span>
+            <?php
+                $adminName = $_SESSION['username']
+                ?? trim(($_SESSION['firstName'] ?? '') . ' ' . ($_SESSION['lastName'] ?? ''));
+
+                $adminRole = $_SESSION['role'] ?? 'admin';
+                ?>
+
+                <div class="admin-user">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100" alt="Admin">
+
+                    <div>
+                        <strong>
+                            <?php echo htmlspecialchars($adminName ?: 'Admin User'); ?>
+                        </strong>
+
+                        <span>
+                            <?php echo ucfirst(htmlspecialchars($adminRole)); ?>
+                        </span>
+                    </div>
                 </div>
-            </div>
         </aside>
 
         <!-- Admin Main Content -->
@@ -121,12 +162,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="admin-stat-card">
                     <div class="stat-header">
                         <h3>Total Users</h3>
-                        <span class="stat-trend up">↑ 12%</span>
+                        
                     </div>
-                    <div class="stat-value">12,458</div>
+                    <div class="stat-value"><?php echo $totalUsers; ?></div>
                     <div class="stat-breakdown">
-                        <span>Buyers: 8,234</span>
-                        <span>Sellers: 4,224</span>
+                        <span>Buyers: <?php echo $totalBuyers; ?></span>
+                        <span>Sellers: <?php echo $totalSellers; ?></span>
+                        <span>Both: <?php echo $totalBoth; ?></span>
                     </div>
                 </div>
                 <div class="admin-stat-card">
@@ -134,10 +176,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <h3>Pending Verifications</h3>
                         <span class="stat-trend alert">!</span>
                     </div>
-                    <div class="stat-value">23</div>
+                    <div class="stat-value"><?php echo $totalPending; ?></div>
                     <div class="stat-breakdown">
-                        <span>Sellers: 12</span>
-                        <span>Items: 11</span>
+                        <span>Sellers: <?php echo $totalPending; ?></span>
+                        
                     </div>
                 </div>
                 
