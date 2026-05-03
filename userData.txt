@@ -2,8 +2,6 @@ John Doe j.doe@example.com $2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uh
 Jane Smith j.smith@example.com $2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi seller
 Sarah Johnson s.johnson@example.com $2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi both
 Michael Chen m.chen@example.com $2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi buyer
-Emily Wilson e.wilson@example.com $2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi seller
-Keoagile Mafora keoagilemafora@gmail.com $2y$10$oxn4F3MKcjCWPF8YwVjwx.9nxnmOsdUhln0MjRM/kpJYzb74ufK5C buyer
-
-Kopano Leshope kopano.leshope@gmail.com $2y$12$q4IADGhRwq3.AAUUhwPsN.G/tbPQ0253fJ3ahkPxsqOa0WRK2UIsu buyer
-Naledi Zulu naledi@mail.com $2y$12$6CHvuIiQ3K1.rufaI1ByAuu5fUaEJAGAFNJdrDdvURQKgCXxJg4Ly seller
+Emily Wilson e.wilson@example.com $2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi sellerKeoagile mafora keoagilemafora@gmail.com $2y$10$1VQrwndWaqq.jUnPbKY0duNMNhnknCgv85e6xTXsu7pct399JwHbu buyer
+Keoagile Mafora keoagilemafora@gmail.com $2y$10$gQSl1jnAgMw/c5Ojzkt/5O7XbxLdwt.5Ah7dQYVUQEn5vRWl/HSFm buyer
+Kopano Leshope kopanoleshope@gmail.com $2y$10$cxU5.jM6OUnkJI1pI0m2JeXaEm8JQihPzfYP6Qmk1hy72R62GMBN6 buyer
